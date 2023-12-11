@@ -1,10 +1,35 @@
-def main():
-    with open("books/frankenstein.txt") as f:
-        file_contents = f.read()
-        print(num_words_in_str(file_contents))
+import string
+import sys
 
-def num_words_in_str(text: str):
+
+def main():
+    book_path = "books/frankenstein.txt"
+    print(f"--- Begin report of {book_path} ---\n")
+    text = get_book_text(book_path)
+    word_count = get_word_count(text)
+    print(f"{word_count} words found in the document.\n")
+    char_dict = get_char_count(text)
+    sorted_chars = sorted([k for k in char_dict.keys()])
+    for char in sorted_chars:
+        print(f"The '{char}' character was found {char_dict[char]} times.")
+    print("\n--- End report ---")
+
+
+def get_word_count(text: str):
     words = text.split()
     return len(words)
 
+def get_char_count(text: str):
+    char_dict = dict((char, 0) for char in list(string.ascii_lowercase))
+    lowercase_text = text.lower()
+    for char in lowercase_text:
+        if char in char_dict:
+            char_dict[char] += 1
+    return char_dict
+
+def get_book_text(path):
+    with open(path) as f:
+        return f.read()
+
 main()
+
