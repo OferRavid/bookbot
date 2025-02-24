@@ -14,14 +14,13 @@ def get_char_count(text: str):
     '''
 
     lowercase_text = text.lower()
-    char_dict = dict((char, 0) for char in lowercase_text)
+    char_dict = dict((char, 0) for char in set(lowercase_text))
     for char in lowercase_text:
-        if char in char_dict:
-            char_dict[char] += 1
+        char_dict[char] += 1
     return char_dict
 
 
-def sort_by_count(chars: dict):
+def chars_dict_to_sorted_list(chars: dict):
     '''
     This function takes a dictionary of letter(lowercase):count, converts it to a
     list of dictionaries each a single (letter(lowercase), count) pair, and then 
@@ -32,7 +31,7 @@ def sort_by_count(chars: dict):
     for k, v in chars.items():
         char_list.append({k: v})
 
-    def sort_on(dict):
+    def sort_on(dict: dict):
         for k in dict.keys():
             return dict[k]
         
