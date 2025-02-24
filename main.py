@@ -1,45 +1,31 @@
-import string
 import sys
 
+from stats import get_num_words, get_char_count, sort_by_count
 
-def main():
+
+def main(book_path):
     '''
     The main function: calls the required function to collect the 
     neccesary data and prints the report.
     '''
 
-    book_path = "books/frankenstein.txt"
-    print(f"--- Begin report of {book_path} ---\n")
+    print("============ BOOKBOT ============")
+    print(f"Analyzing book found at {book_path}...")
+
     text = get_book_text(book_path)
-    word_count = get_word_count(text)
-    print(f"{word_count} words found in the document.\n")
-    char_dict = get_char_count(text)
-    sorted_chars = sorted([k for k in char_dict.keys()])
-    for char in sorted_chars:
-        print(f"The '{char}' character was found {char_dict[char]} times.")
-    print("\n--- End report ---")
+    word_count = get_num_words(text)
+    print("----------- Word Count ----------")
+    print(f"Found {word_count} total words")
 
+    print("--------- Character Count -------")
+    chars_count = sort_by_count(get_char_count(text))
+    for item in chars_count:
+        for k, v in item.items():
+            if k.isalpha():
+                print(f"{k}: {v}")
+    
+    print("============= END ===============")
 
-def get_word_count(text: str):
-    '''
-    This function calculates and returns the word count in given text.
-    '''
-
-    words = text.split()
-    return len(words)
-
-def get_char_count(text: str):
-    '''
-    This function counts appearances of letters in given text,
-    and returns a dictionary of letter(lowercase):count.
-    '''
-
-    char_dict = dict((char, 0) for char in list(string.ascii_lowercase))
-    lowercase_text = text.lower()
-    for char in lowercase_text:
-        if char in char_dict:
-            char_dict[char] += 1
-    return char_dict
 
 def get_book_text(path):
     '''
@@ -50,5 +36,8 @@ def get_book_text(path):
         return f.read()
 
 
-main()
-
+if __name__=="__main__":
+    if len(sys.argv) != 2:
+        print("Usage: python3 main.py <path_to_book>")
+        sys.exit(1)
+    main(sys.argv[1])
